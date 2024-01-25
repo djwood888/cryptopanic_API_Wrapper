@@ -18,6 +18,13 @@ import datetime
 import config
 import time
 
+# main_script.py
+import config
+
+# Access the API key
+api_key = config.API_KEY
+
+
 global_api_rate_delay = .2  # All API methods are rate limited per IP at 5req/sec.
 
 
@@ -99,3 +106,11 @@ def concatenate_pages(pages_list):
     return pd.concat(frames, ignore_index=True)
 
 # df = concatenate_pages(get_pages_list_json(2, make_url()))
+
+df = concatenate_pages(pages_list=get_pages_list_json(2, make_url(filter='hot', currencies='btc')))
+df
+
+import csv
+with open('assetsummaries_cpanic.csv', mode='w', newline='') as f:
+    csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    csv_writer.writerows(df)

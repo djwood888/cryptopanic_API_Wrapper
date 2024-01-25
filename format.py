@@ -8,13 +8,25 @@ Historical Data seems to be limited to 12/24/2018 but there is no Documentation.
 
 """
 import api_gather
-# from importlib import reload
-# reload(api_gather)
 
-url_everything = api_gather.make_url(filter='hot')
-everything_pages_last_100 = api_gather.get_pages_list_json(9, url_everything)
+# main_script.py
+import config
 
-everything_pages_last_100_results = []
-for page in everything_pages_last_100:
-    everything_pages_last_100_results.append(page['results'])
-df_results = api_gather.concatenate_pages(everything_pages_last_100_results)
+# Access the API key
+api_key = config.API_KEY
+
+from importlib import reload
+reload(api_gather)
+
+# Assuming 'make_url' returns a URL string
+url_everything = api_gather.make_url(filter='important')
+
+# Append the BTC currency filter to the URL query string
+url_everything += '&currencies=BTC'  
+
+everything_pages_last_200 = api_gather.get_pages_list_json(9, url_everything)
+
+everything_pages_last_200_results = []
+for page in everything_pages_last_200:
+    everything_pages_last_200_results.append(page['results'])
+df_results = api_gather.concatenate_pages(everything_pages_last_200_results)
